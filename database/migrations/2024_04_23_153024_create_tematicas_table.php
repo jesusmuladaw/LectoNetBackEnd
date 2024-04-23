@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\ForeignKeyDefinition;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,14 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('idiomas', function (Blueprint $table) {
+        Schema::create('tematicas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('book_id')->nullable();
-            $table->$table->enum('idioma', ['Español', 'Inglés', 'Francés', 'Alemán'])->default('Español');
+            $table->enum('tematica', ['Literatura', 'Consulta', 'Artística', 'Divulgativa', 'De texto', 'Técnica', 'Práctica', 'Religiosa', 'Autoayuda', 'Infantil']);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('idiomas');
+        Schema::dropIfExists('tematicas');
     }
 };

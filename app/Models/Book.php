@@ -13,4 +13,19 @@ class Book extends Model
     {
         return $this->hasOne(Idioma::class);
     }
+
+    public function tematica()
+    {
+        return $this->hasOne(Tematica::class);
+    }
+
+    public function genero()
+    {
+        return $this->hasOne(Genero::class);
+    }
+
+    public function categoria()
+    {
+        return $this->hasOne(Categoria::class);
+    }
 }
