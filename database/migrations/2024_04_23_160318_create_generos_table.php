@@ -16,8 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('book_id')->nullable();
             $table->enum('genero', ['Narrativo', 'Lírico', 'Poético', 'Dramático', 'Didáctico']);
             $table->timestamps();
-
-            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
         });
     }
 

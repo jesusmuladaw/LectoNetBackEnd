@@ -20,11 +20,6 @@ return new class extends Migration
             $table->unsignedBigInteger('categoria_id')->nullable();
             $table->unsignedBigInteger('genero_id')->nullable();
             $table->timestamps();
-
-            $table->foreign('idioma_id')->references('id')->on('idiomas')->onDelete('set null');
-            $table->foreign('tematica_id')->references('id')->on('tematicas')->onDelete('set null');
-            $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('set null');
-            $table->foreign('genero_id')->references('id')->on('generos')->onDelete('set null');
         });
     }
 
