@@ -1,6 +1,5 @@
 import { Link, Head } from '@inertiajs/react';
 import logoSVG from '../../img/LogoLectoNet.png';
-import imagen from '../../img/LogoLectoNet.png'
 import CarruselLibros from './ComponentesWelcome/Carrusel';
 import CodigoPostal from './ComponentesWelcome/CodigoPostal';
 
@@ -48,10 +47,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         </header>
                         <main className="mt-6">
                             <div className='flex justify-center items-center'>
-                                <div className=' justify-center items-center'>
-                                    <img className='h-32' src={imagen} alt="Logo" />
-                                    <img className='h-32' src={imagen} alt="Logo" />
-                                </div>
+                                {CarruselLibros()}
                             </div>
                         </main>
                         <footer className="py-16 text-center text-sm text-black">

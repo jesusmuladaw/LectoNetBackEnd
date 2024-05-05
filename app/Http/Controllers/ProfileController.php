@@ -13,6 +13,13 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        return Inertia::render('Profile/Index', [
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+        ]);
+    }
     /**
      * Display the user's profile form.
      */
