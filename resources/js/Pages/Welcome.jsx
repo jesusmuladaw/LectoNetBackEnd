@@ -1,7 +1,8 @@
 import { Link, Head } from '@inertiajs/react';
 import logoSVG from '../../img/LogoLectoNet.png';
 import imagen from '../../img/LogoLectoNet.png'
-import CarruselLibros from './ComponentesWelcome/Carrusel';
+import CarruselLibros from './ComponentesWelcome/CarouselBooks';
+import CarruselUsuarios from './ComponentesWelcome/CarouselUsers';
 import CodigoPostal from './ComponentesWelcome/CodigoPostal';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
@@ -11,8 +12,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
             <Head title="LectoNet" />
             <Head link rel="stylesheet" type="text/css" href="slick/slick.css"/>
             <Head link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-            <div className="bg-blue-50 text-black/50 dark:bg-gray-500 dark:text-white/50">
-                <div className="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
+            <div className="bg-blue-50 text-black/50 ">
+                <div className="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#af9392] selection:text-white">
                     <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                         <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
                             <div className="flex lg:justify-center lg:col-start-2">
@@ -23,22 +24,22 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <nav className="-mx-3 flex flex-1 justify-end">
                                 {auth.user ? (
                                     <Link
-                                        href={route('dashboard')}
-                                        className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                        href={route('explorar')}
+                                        className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                                     >
-                                        Dashboard
+                                        Explorar
                                     </Link>
                                 ) : (
                                     <>
                                         <Link
                                             href={route('login')}
-                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] "
                                         >
                                             Iniciar Sesion
                                         </Link>
                                         <Link
                                             href={route('register')}
-                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] "
                                         >
                                             Registro
                                         </Link>
@@ -47,11 +48,9 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             </nav>
                         </header>
                         <main className="mt-6">
-                            <div className='flex justify-center items-center'>
-                                <div className=' justify-center items-center'>
-                                    <img className='h-32' src={imagen} alt="Logo" />
-                                    <img className='h-32' src={imagen} alt="Logo" />
-                                </div>
+                            <div className=' justify-center items-center'>
+                                <CarruselLibros/>
+                                <CarruselUsuarios/>
                             </div>
                         </main>
                         <footer className="py-16 text-center text-sm text-black">
