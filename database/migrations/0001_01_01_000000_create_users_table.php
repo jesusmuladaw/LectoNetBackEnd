@@ -19,9 +19,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('edad')->nullable();
-            $table->string('descripcion')->nullable();
-            $table->unsignedBigInteger('direccion_id')->nullable();
-            $table->unsignedBigInteger('idioma_id')->nullable();
+            $table->string('descripcion', 400)->nullable();
+            $table->string('foto')->nullable();
+            $table->unsignedBigInteger('pais_id')->nullable();
+            $table->unsignedBigInteger('ciudad_id')->nullable();
 
             $table->rememberToken();
             $table->timestamps();

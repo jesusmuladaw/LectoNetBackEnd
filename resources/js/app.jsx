@@ -7,6 +7,15 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 const appName ='LectoNet';
 
+// window.Pusher = Pusher;
+
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     forceTLS: true,
+// });
+
 createInertiaApp({
     title: (title) => `${title}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),

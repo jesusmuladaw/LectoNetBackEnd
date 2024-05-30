@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Direccion;
+use App\Models\Idioma;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -24,12 +26,33 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->firstName(),
+            'apellidos' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'edad' => fake()->numberBetween(18,90),
+            'descripcion' => Str::limit(fake()->text(), 150),
+            'foto' => '_ea1a1366-6dd7-48e0-90cf-414229ef58e2.jfif',
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
+
+    }
+
+    public function withDireccion(){
+        return $this->state(function (array $datos){
+            return [
+                'direccion_id' => Direccion::factory()->create()->id,
+            ];
+        });
+    }
+
+    public function withIdiomas($cantidad = 1){
+        return $this->state(function(array $datos) use ($cantidad) {
+            $languageId = Idioma::inRandomOrder()->limit($cantidad)->pluck('id')->toArray();
+            return ['idioma_id' => $languageId];  
+        });
     }
 
     /**

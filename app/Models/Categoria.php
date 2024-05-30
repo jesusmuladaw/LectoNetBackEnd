@@ -9,8 +9,10 @@ class Categoria extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['categoria'];
+
     public function books()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsToMany(Book::class, 'book_categoria');
     }
 }

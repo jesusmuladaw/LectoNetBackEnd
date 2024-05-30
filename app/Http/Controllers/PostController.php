@@ -63,4 +63,14 @@ class PostController extends Controller
     {
         //
     }
+
+    public function getRecentPosts()
+    {
+        $posts = Post::with('user')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+
+        return response()->json($posts);
+    }
 }

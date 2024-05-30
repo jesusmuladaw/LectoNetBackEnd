@@ -1,8 +1,8 @@
 import { Link, Head } from '@inertiajs/react';
 import logoSVG from '../../img/LogoLectoNet.png';
 import imagen from '../../img/LogoLectoNet.png'
-import CarruselLibros from './ComponentesWelcome/CarouselBooks';
-import CarruselUsuarios from './ComponentesWelcome/CarouselUsers';
+import CarouselBooks from './ComponentesWelcome/CarouselBooks';
+import CarouselUsers from './ComponentesWelcome/CarouselUsers';
 import CodigoPostal from './ComponentesWelcome/CodigoPostal';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
@@ -49,8 +49,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         </header>
                         <main className="mt-6">
                             <div className=' justify-center items-center'>
-                                <CarruselLibros/>
-                                <CarruselUsuarios/>
+                                <CarouselBooks apiUrl='/api/books/top-rated'/>
+                                <CarouselUsers apiUrl='/api/users/near-you' />
                             </div>
                         </main>
                         <footer className="py-16 text-center text-sm text-black">

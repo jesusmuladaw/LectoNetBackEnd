@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('direccions', function (Blueprint $table) {
+        Schema::create('book_idioma', function (Blueprint $table) {
             $table->id();
-            $table->string('calle');
-            $table->string('poblacion');
-            $table->string('ciudad');
-            $table->string('pais');
-            $table->string('cp');
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreignId('book_id')->constrained()->onDelete('cascade');
+            $table->foreignId('idioma_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('direccions');
+        Schema::dropIfExists('book_idioma');
     }
 };

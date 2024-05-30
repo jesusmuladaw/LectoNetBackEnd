@@ -10,13 +10,15 @@ class Idioma extends Model
 {
     use HasFactory;
 
-    public function users(): BelongsToMany
+    protected $fillable = ['idioma'];
+
+    public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'idioma_user');
     }
 
     public function books()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsToMany(Book::class, 'book_idioma');
     }
 }
