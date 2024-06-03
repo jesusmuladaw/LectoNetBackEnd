@@ -78,7 +78,6 @@ class ProfileController extends Controller
             }
             $f->move(public_path($path), $filename);
             $user->foto = $filename;
-            $user->save();
         }
 
         $user->pais_id = $request->input('pais_id');
@@ -86,7 +85,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'Profile updated successfully!');
+        return Redirect::route('profile.index')->with('status', 'Profile updated successfully!');
     }
 
     public function destroy(Request $request): RedirectResponse
@@ -145,7 +144,7 @@ class ProfileController extends Controller
     public function userPosts($id)
     {
         $user = User::findOrFail($id);
-        $posts = $user->posts()->get();
+        $posts = $user->posts()->orderBy('created_at', 'desc')->get();
         return response()->json($posts);
     }
 
@@ -162,6 +161,7 @@ class ProfileController extends Controller
         $sharedStatus = OwnershipStatus::where('estado', 'compartir')->first();
 
         $usersWithSharedBooks = User::where('ciudad_id', $user->ciudad_id)
+            ->where('id', '!=', $user->id)
             ->whereHas('books', function ($query) use ($sharedStatus, $categoryIds, $genreIds, $tematicIds) {
                 $query->where('book_user.ownership_status_id', $sharedStatus->id)
                     ->where(function ($query) use ($categoryIds, $genreIds, $tematicIds) {
@@ -194,7 +194,7 @@ class ProfileController extends Controller
         $sharedStatus = OwnershipStatus::where('estado', 'compartir')->first();
 
         $usersWithSharedBooks = User::where('ciudad_id', $user->ciudad_id)
-            ->where('id', '!=', $user->id) // Excluir al usuario logueado
+            ->where('id', '!=', $user->id)
             ->whereHas('books', function ($query) use ($sharedStatus, $categoryIds, $genreIds, $tematicIds) {
                 $query->where('book_user.ownership_status_id', $sharedStatus->id)
                     ->where(function ($query) use ($categoryIds, $genreIds, $tematicIds) {
@@ -268,4 +268,56 @@ class ProfileController extends Controller
 
         return response()->json($interestedUsers);
     }
+
+    public function getUsersWithBooksOfInterest(Request $request)
+    {
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
+        $interestedBooks = $user->books()
+            ->wherePivot('reading_status_id', ReadingStatus::where('estado', 'leer')->first()->id)
+            ->get();
+
+        $interestedBookIds = $interestedBooks->pluck('id');
+
+        $sharedStatus = OwnershipStatus::where('estado', 'compartir')->first();
+        $usersWithSharedBooks = User::whereHas('books', function ($query) use ($interestedBookIds, $sharedStatus) {
+            $query->whereIn('books.id', $interestedBookIds)
+                ->where('book_user.ownership_status_id', $sharedStatus->id);
+        })
+        ->where('id', '!=', Auth::id())
+        ->get();
+
+        return response()->json($usersWithSharedBooks);
+    }
+
+
+    public function getReadingBooks($userId)
+    {
+        $readingStatus = ReadingStatus::where('estado', 'leyendo')->first();
+
+        if (!$readingStatus) {
+            return response()->json(['error' => 'Reading status not found.'], 404);
+        }
+
+        $user = User::findOrFail($userId);
+
+        $readingBooks = $user->books()->wherePivot('reading_status_id', $readingStatus->id)->get();
+
+        return response()->json($readingBooks);
+    }
+
+
+    public function getUsersWelcome()
+    {
+        $users = User::whereBetween('edad', [20, 40])
+            ->take(20)
+            ->get(['id', 'name', 'foto']);
+        
+        return response()->json($users);
+    }
+
+
 }
+
+

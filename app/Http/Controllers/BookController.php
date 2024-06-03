@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Models\Categoria;
 use App\Models\Foto;
+use App\Models\Genero;
+use App\Models\Idioma;
 use App\Models\ReadingStatus;
 use App\Models\OwnershipStatus;
+use App\Models\Tematica;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class BookController extends Controller
@@ -42,6 +49,12 @@ class BookController extends Controller
     public function create()
     {
         //
+        return Inertia::render('Books/Create', [
+            'idiomas' => Idioma::all(),
+            'categorias' => Categoria::all(),
+            'generos' => Genero::all(),
+            'tematicas' => Tematica::all(),
+        ]);
     }
 
     /**
@@ -50,6 +63,29 @@ class BookController extends Controller
     public function store(StoreBookRequest $request)
     {
         //
+        {
+            $book = new Book();
+            $book->titulo = $request->titulo;
+            $book->autor = $request->autor;
+            $book->descripcion = $request->descripcion;
+
+            if ($request->hasFile('foto')) {
+                $file = $request->file('foto');
+                $filename = time() . '-' . $file->getClientOriginalName();
+                $path = public_path('images/books');
+                $file->move($path, $filename);
+                $book->foto = $filename;
+            }
+
+            $book->save();
+
+            $book->idiomas()->attach($request->idioma_id);
+            $book->categorias()->attach($request->categoria_id);
+            $book->generos()->attach($request->genero_id);
+            $book->tematicas()->attach($request->tematica_id);
+
+            return redirect()->route('books.index')->with('status', 'Book created successfully!');
+        }
     }
 
     /**
@@ -85,6 +121,15 @@ class BookController extends Controller
     public function edit(Book $book)
     {
         //
+        $book->load('idiomas', 'categorias', 'generos', 'tematicas');
+
+        return Inertia::render('Books/Edit', [
+            'book' => $book,
+            'idiomas' => Idioma::all(),
+            'categorias' => Categoria::all(),
+            'generos' => Genero::all(),
+            'tematicas' => Tematica::all(),
+        ]);
     }
 
     /**
@@ -93,6 +138,23 @@ class BookController extends Controller
     public function update(UpdateBookRequest $request, Book $book)
     {
         //
+        $book->update($request->only('titulo', 'autor', 'descripcion'));
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = time() . '-' . $file->getClientOriginalName();
+            $path = public_path('images/books');
+            $file->move($path, $filename);
+            $book->foto = $filename;
+        }
+
+        $book->idiomas()->sync($request->idioma_id);
+        $book->categorias()->sync($request->categoria_id);
+        $book->generos()->sync($request->genero_id);
+        $book->tematicas()->sync($request->tematica_id);
+
+        return redirect()->route('books.index')->with('status', 'Book updated successfully!');
+
     }
 
     /**
@@ -206,5 +268,47 @@ class BookController extends Controller
 
         return response()->json(['message' => 'Ownership status updated successfully'], 200);
         
+    }
+
+    public function currentlyReading($id)
+    {
+        $user = User::findOrFail($id);
+        $currentlyReadingBook = $user->books()->wherePivot('reading_status_id', ReadingStatus::where('estado', 'leyendo')->first()->id)->first();
+        
+        if ($currentlyReadingBook) {
+            $wishCount = $currentlyReadingBook->users()->wherePivot('reading_status_id', ReadingStatus::where('estado', 'leer')->first()->id)->count();
+            return response()->json(['book' => $currentlyReadingBook, 'wishCount' => $wishCount]);
+        }
+
+        return response()->json(['book' => null, 'wishCount' => 0]);
+    }
+
+    public function mostWishedBookOfMonth()
+    {
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        $desiredStatus = ReadingStatus::where('estado', 'leer')->first();
+
+        if (!$desiredStatus) {
+            return response()->json(['book' => null, 'wishCount' => 0]);
+        }
+
+        $mostWishedBook = DB::table('book_user')
+            ->select('book_id', DB::raw('count(*) as wish_count'))
+            ->where('reading_status_id', $desiredStatus->id)
+            ->whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->groupBy('book_id')
+            ->orderByDesc('wish_count')
+            ->first();
+
+        if (!$mostWishedBook) {
+            return response()->json(['book' => null, 'wishCount' => 0]);
+        }
+
+        $book = Book::find($mostWishedBook->book_id);
+
+        return response()->json(['book' => $book, 'wishCount' => $mostWishedBook->wish_count]);
     }
 }

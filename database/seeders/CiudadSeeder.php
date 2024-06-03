@@ -3905,7 +3905,7 @@ class CiudadSeeder extends Seeder
             Ciudad::create( [
             'id'=>652,
             'pais_id'=>28,
-            'nombre'=>'València'
+            'nombre'=>'Valencia'
             ] );
                         
             Ciudad::create( [

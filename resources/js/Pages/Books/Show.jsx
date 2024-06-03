@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import axios from 'axios';
 import Heart from 'react-animated-heart';
+import FotoLibro from "@/Components/FotoLibro";
 
 export default function Show({ auth, mustVerifyEmail, status, book, reading_status, ownership_status }) {
     const [isLiked, setIsLiked] = useState(book.liked);
@@ -46,8 +47,8 @@ export default function Show({ auth, mustVerifyEmail, status, book, reading_stat
             <div className="container mx-auto px-4 pt-10">
                 <div className="bg-white rounded-lg shadow p-6 flex flex-wrap md:flex-nowrap">
                     <div className="w-full md:w-1/3 flex flex-col items-center">
-                        <div className="rounded-lg overflow-hidden w-48 h-56 my-5">
-                            <img src={book.foto} alt={book.titulo} className="object-cover w-full h-full" />
+                        <div className="rounded-lg overflow-hidden w-48 h-auto my-5">
+                            <FotoLibro fotoId={book.foto}/>
                         </div>
                         <div className="text-center">
                             <Heart isClick={isLiked} onClick={handleLike} />

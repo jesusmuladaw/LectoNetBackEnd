@@ -50,7 +50,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         <main className="mt-6">
                             <div className=' justify-center items-center'>
                                 <CarouselBooks apiUrl='/api/books/top-rated'/>
-                                <CarouselUsers apiUrl='/api/users/near-you' />
+                                <CarouselUsers apiUrl='/api/users/welcome' />
                             </div>
                         </main>
                         <footer className="py-16 text-center text-sm text-black">

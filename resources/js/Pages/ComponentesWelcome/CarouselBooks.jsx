@@ -3,6 +3,7 @@ import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import axios from 'axios';
 import Heart from 'react-animated-heart';
+import FotoLibro from '@/Components/FotoLibro';
 
 export default function CarouselBooks({ apiUrl }) {
     const [books, setBooks] = useState([]);
@@ -18,7 +19,7 @@ export default function CarouselBooks({ apiUrl }) {
         1024: { items: 5 },
     };
 
-    const confCarruselLibros = 'object-cover w-28 h-40 overflow-hidden m-auto items-center justify-center rounded-lg';
+    const confCarruselLibros = 'object-cover w-24 overflow-hidden m-auto items-center justify-center rounded-lg';
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -83,7 +84,9 @@ export default function CarouselBooks({ apiUrl }) {
             className="relative"
         >
             <div className=" p-4 rounded-lg text-center">
-                <img className={confCarruselLibros} src={book.foto} alt={book.titulo} onDragStart={handleDragStart} role="presentation" />
+                <div className={confCarruselLibros}>
+                    <FotoLibro fotoId={book.foto} />
+                </div>
                 <div className=" m-auto rounded-full overflow-hidden text-center w-20 sm:w-24md:w-28 lg:w-32 xl:w-36">
                     <div className='-mt-2 '>
                         <Heart isClick={book.liked} onClick={(e) => handleLike(e, book)} />

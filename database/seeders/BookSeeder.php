@@ -15,6 +15,6 @@ class BookSeeder extends Seeder
     {
         //
 
-        Book::factory(300)->create();
+        Book::factory(1000)->create();
     }
 }

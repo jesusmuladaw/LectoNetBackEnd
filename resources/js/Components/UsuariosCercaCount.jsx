@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-alice-carousel';
 
 export default function UsuariosCercaCount() {
     const [userCount, setUserCount] = useState(0);
@@ -31,7 +32,7 @@ export default function UsuariosCercaCount() {
 
     return (
         <div className="bg-white p-4 rounded-lg flex">
-            <h2>Hay {userCount} personas con libros que te interesan ¡Contacta con ellas!</h2>
+            <h2>Hay {userCount} personas con libros que te interesan <Link href={route('users.compartenLibros')} className='text-blue-500 hover:underline'>¡Contacta con ellas!</Link></h2>
         </div>
     );
 }

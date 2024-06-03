@@ -5,6 +5,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import FotoPerfil from '@/Pages/Profile/Partials/FotoPerfil';
+import SearchBar from '@/Components/SearchBar';
 
 
 export default function Authenticated({ user, header, children }) {
@@ -32,7 +33,15 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('profile.personas')} active={route().current('profile.personas')}>
                                     Personas
                                 </NavLink>
+                                <NavLink href={route('blog.index')} active={route().current('blog.index')}>
+                                    Blog
+                                </NavLink>
                             </div>
+                            
+
+                        </div>
+                        <div className="flex items-center space-x-4 w-full max-w-56 md:max-w-md lg:max-w-lg">
+                            <SearchBar />
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -98,6 +107,16 @@ export default function Authenticated({ user, header, children }) {
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink href={route('explorar')} active={route().current('explorar')}>
                             Libros
+                        </ResponsiveNavLink>
+                    </div>
+                    <div className="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink href={route('profile.personas')} active={route().current('profile.personas')}>
+                            Personas
+                        </ResponsiveNavLink>
+                    </div>
+                    <div className="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink href={route('blog.index')} active={route().current('blog.index')}>
+                            Blog
                         </ResponsiveNavLink>
                     </div>
 

@@ -21,12 +21,17 @@ export default function Index ({ auth, mustVerifyEmail, status }) {
                     </div>
                 </div>
                 <div className={confCarruselPaginaLibros}>
-                    <h2 className="py-4">Personas que quieren leer tus libros</h2>
+                    <h2 className="py-4">Personas interesadas en los libros que compartes</h2>
                     <div className=" rounded-xl shadow-lg m-auto h-60 overflow-hidden">
                         <CarouselUsers apiUrl='/api/users/interested' />
                     </div>
                 </div>
-                
+                <div className={confCarruselPaginaLibros}>
+                    <h2 className="py-4">Usuarios que comparten libros de tu lista de deseos</h2>
+                    <div className="rounded-xl shadow-lg m-auto h-60 overflow-hidden">
+                        <CarouselUsers apiUrl='/api/users/with-books-of-interest' />
+                    </div>
+                </div>
             </div>
         </AuthenticatedLayout>
     );

@@ -40,9 +40,6 @@ const BooksToShareGeneric = ({ userId }) => {
                     {books.map((book) => (
                         <li key={book.id}>
                             <Link href={route('books.show', book.id)} className="text-black hover:text-gray-600 flex">
-                                <div className='w-6 m-2'>
-                                    <FotoPerfil fotoId={book.foto} />
-                                </div>
                                 <div>
                                     <h5 className='font-bold text-sm mt-2'>{book.titulo}</h5>
                                     <p className='text-xs'>{book.autor}</p>
@@ -93,9 +90,6 @@ const WishListGeneric = ({ userId }) => {
                     {books.map((book) => (
                         <li key={book.id}>
                             <Link href={route('books.show', book.id)} className="text-black hover:text-gray-600 flex">
-                                <div className='w-6 m-2'>
-                                    <FotoPerfil fotoId={book.foto} />
-                                </div>
                                 <div>
                                     <h5 className='font-bold text-sm mt-2'>{book.titulo}</h5>
                                     <p className='text-xs'>{book.autor}</p>

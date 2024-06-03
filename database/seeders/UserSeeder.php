@@ -26,11 +26,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('asdfñlkj'),
             'edad' => 30,
             'descripcion' => 'Me encanta leer un buen libro mientras tomo café',
+            'pais_id' => 28,
+            'ciudad_id' => 652,
             'foto' => '1716626677-_8d751e2e-edb8-4a94-b304-2ac3092896db.jfif',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        User::factory(20)->create();
+        User::factory(600)->create();
             
 
     }

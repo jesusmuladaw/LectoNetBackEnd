@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import FotoPost from './FotoPost';
+import { Link } from '@inertiajs/react';
 
 export default function RecentPosts() {
     const [posts, setPosts] = useState([]);
@@ -35,11 +37,18 @@ export default function RecentPosts() {
             {posts.map((post) => (
                 <div key={post.id} className="bg-white w-full rounded-lg p-6 mb-4">
                     <article className='flex flex-col md:flex-row'>
-                        <img className='w-full md:w-24 h-36 object-cover mb-4 md:mb-0 md:mr-4' src="https://www.cervantesvirtual.com/images/qbi/grande/0020108394.jpg" alt="" />
-                        <div className='flex flex-col justify-between'>
+                        {post.foto && (
+                            <div className="w-full md:w-1/3 mb-4 md:mb-0">
+                                <FotoPost fotoId={post.foto} />
+                            </div>
+                        )}
+                        <div className=' w-full flex flex-col justify-between'>
                             <h3 className='font-bold text-lg'>{post.titulo}</h3>
                             <p className='text-sm'>{post.contenido}</p>
                             <p className="text-sm text-gray-600">Publicado por {post.user.name} el {new Date(post.created_at).toLocaleDateString()}</p>
+                            <div className="flex justify-end px-4">
+                                <Link href={route('blog.show', post.id)} className="text-blue-500 hover:underline">Leer más</Link>
+                            </div>
                         </div>
                     </article>
                 </div>

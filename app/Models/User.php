@@ -24,8 +24,8 @@ class User extends Authenticatable
         'password',
         'edad',
         'descripcion',
-        'direccion_id',
-        'idioma_id',
+        'pais_id',
+        'ciudad_id',
         'foto',
     ];
 
@@ -84,12 +84,12 @@ class User extends Authenticatable
     }
     public function pais()
     {
-        return $this->belongsTo(Pais::class, 'pais_id');
+        return $this->belongsTo(Pais::class);
     }
 
     public function ciudad()
     {
-        return $this->belongsTo(Ciudad::class, 'ciudad_id');
+        return $this->belongsTo(Ciudad::class);
     }
 
     public function wishListBooks()
@@ -109,5 +109,10 @@ class User extends Authenticatable
     public function likedBooks()
     {
         return $this->belongsToMany(Book::class, 'likes')->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

@@ -6,7 +6,7 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Transition } from '@headlessui/react';
 
-export default function UpdateProfileInformation({ auth, mustVerifyEmail, status, className = '' }) {
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
     const { auth, paises, ciudades } = usePage().props;
     const user = auth.user;
 
@@ -14,6 +14,7 @@ export default function UpdateProfileInformation({ auth, mustVerifyEmail, status
     const sortedCiudades = [...ciudades].sort((a, b) => a.nombre.localeCompare(b.nombre));
 
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
+        _method: 'POST',
         name: user.name,
         apellidos: user.apellidos,
         email: user.email,

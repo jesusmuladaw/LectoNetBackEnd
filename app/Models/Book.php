@@ -9,13 +9,12 @@ class Book extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'idioma',
-        'tematica',
-        'genero',
-        'categoria',
+        'titulo',
+        'autor',
+        'descripcion',
         'foto',
     ];
-
+        
     public function idiomas()
     {
         return $this->belongsToMany(Idioma::class, 'book_idioma');
