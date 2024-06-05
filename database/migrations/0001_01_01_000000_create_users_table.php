@@ -13,21 +13,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 70);
+            $table->string('name', 70);
             $table->string('apellidos', 100);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->int('edad');
-            $table->string('descripcion')->nullable();
-            $table->unsignedBigInteger('direccion_id')->nullable();
-            $table->unsignedBigInteger('idioma_id')->nullable();
+            $table->integer('edad')->nullable();
+            $table->string('descripcion', 400)->nullable();
+            $table->string('foto')->nullable();
+            $table->unsignedBigInteger('pais_id')->nullable();
+            $table->unsignedBigInteger('ciudad_id')->nullable();
 
             $table->rememberToken();
             $table->timestamps();
-
-            $table->foreign('direccion_id')->references('id')->on('direccions')->onDelete('set null');
-            $table->foreign('idioma_id')->references('id')->on('idiomas')->onDelete('set null');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

@@ -9,8 +9,10 @@ class Genero extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['genero'];
+
     public function books()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsToMany(Book::class, 'book_genero');
     }
 }

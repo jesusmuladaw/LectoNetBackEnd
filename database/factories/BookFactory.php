@@ -2,6 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Book;
+use App\Models\Categoria;
+use App\Models\Genero;
+use App\Models\Idioma;
+use App\Models\Tematica;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +22,25 @@ class BookFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'titulo' => $this->faker->sentence(3),
+            'autor' => $this->faker->name,
+            'foto' => $this->faker->imageUrl(200, 300, 'books', true, 'Faker'),
+            'descripcion' => implode(' ', $this->faker->paragraphs()),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Book $book) {
+            $idioma = Idioma::inRandomOrder()->first();
+            $tematica = Tematica::inRandomOrder()->first();
+            $categoria = Categoria::inRandomOrder()->first();
+            $genero = Genero::inRandomOrder()->first();
+
+            $book->idiomas()->attach($idioma);
+            $book->tematicas()->attach($tematica);
+            $book->categorias()->attach($categoria);
+            $book->generos()->attach($genero);
+        });
     }
 }

@@ -13,13 +13,8 @@ return new class extends Migration
     {
         Schema::create('idiomas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('book_id')->nullable();
-            $table->$table->enum('idioma', ['Español', 'Inglés', 'Francés', 'Alemán'])->default('Español');
+            $table->string('idioma');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
         });
     }
 

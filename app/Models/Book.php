@@ -8,24 +8,52 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
-
-    public function idioma()
+    protected $fillable = [
+        'titulo',
+        'autor',
+        'descripcion',
+        'foto',
+    ];
+        
+    public function idiomas()
     {
-        return $this->hasOne(Idioma::class);
+        return $this->belongsToMany(Idioma::class, 'book_idioma');
     }
 
-    public function tematica()
+    public function tematicas()
     {
-        return $this->hasOne(Tematica::class);
+        return $this->belongsToMany(Tematica::class, 'book_tematica');
     }
 
-    public function genero()
+    public function generos()
     {
-        return $this->hasOne(Genero::class);
+        return $this->belongsToMany(Genero::class, 'book_genero');
     }
 
-    public function categoria()
+    public function categorias()
     {
-        return $this->hasOne(Categoria::class);
+        return $this->belongsToMany(Categoria::class, 'book_categoria');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'book_user')->withPivot(['reading_status_id', 'ownership_status_id'])->withTimestamps();
+    }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+ 
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
+    }
+
 }

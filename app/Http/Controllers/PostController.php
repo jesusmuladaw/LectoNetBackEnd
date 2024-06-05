@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Comment;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -13,7 +18,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::orderBy('created_at', 'desc')->take(10)->get();
+        $hasMore = Post::count() > 10;
+
+        return Inertia::render('Blog/Index', [
+            'initialPosts' => $posts,
+            'hasMore' => $hasMore,
+        ]);
     }
 
     /**
@@ -22,6 +33,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return Inertia::render('Blog/Create');
     }
 
     /**
@@ -30,6 +42,39 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         //
+        {
+            $request->validate([
+                'titulo' => 'required|string|max:255',
+                'contenido' => 'required|string',
+                'imagen' => 'nullable|image|max:5120',
+            ], [
+                'titulo.required' => 'El título es obligatorio.',
+                'contenido.required' => 'El contenido es obligatorio.',
+                'imagen.image' => 'El archivo debe ser una imagen.',
+                'imagen.max' => 'La imagen no debe ser mayor a 5 MB.'
+            ]);
+    
+            $post = new Post();
+            $post->titulo = $request->titulo;
+            $post->contenido = $request->contenido;
+            $post->user_id = Auth::id();
+    
+            if ($request->hasFile('foto')) {
+                $imagen = $request->file('foto');
+                $path = 'images/postImages';
+                $filename = time() . '-' . $imagen->getClientOriginalName();
+    
+                if (!file_exists(public_path($path))) {
+                    mkdir(public_path($path), 0755, true);
+                }
+                $imagen->move(public_path($path), $filename);
+                $post->foto = $filename;
+            }
+    
+            $post->save();
+    
+            return Redirect::route('blog.index');
+        }
     }
 
     /**
@@ -38,6 +83,8 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
+        $post = Post::with('comments.user')->findOrFail($post->id);
+        return inertia('Blog/Show', ['post' => $post]);
     }
 
     /**
@@ -46,6 +93,7 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
+        return Inertia::render('Blog/Edit', ['post' => $post]);
     }
 
     /**
@@ -53,7 +101,44 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'contenido' => 'required|string',
+            'foto' => 'nullable|image|max:5120',
+            'remove_image' => 'boolean'
+        ], [
+            'titulo.required' => 'El título es obligatorio.',
+            'contenido.required' => 'El contenido es obligatorio.',
+            'foto.image' => 'El archivo debe ser una imagen.',
+            'foto.max' => 'La imagen no debe ser mayor a 5 MB.'
+        ]);
+
+        $post->titulo = $request->titulo;
+        $post->contenido = $request->contenido;
+
+        if ($request->remove_image) {
+            if ($post->foto && file_exists(public_path('images/postImages/' . $post->imagen))) {
+                unlink(public_path('images/postImages/' . $post->imagen));
+            }
+            $post->foto = null;
+        } elseif ($request->hasFile('foto')) {
+            if ($post->foto && file_exists(public_path('images/postImages/' . $post->foto))) {
+                unlink(public_path('images/postImages/' . $post->foto));
+            }
+            $imagen = $request->file('imagen');
+            $path = 'images/postImages';
+            $filename = time() . '-' . $imagen->getClientOriginalName();
+
+            if (!file_exists(public_path($path))) {
+                mkdir(public_path($path), 0755, true);
+            }
+            $imagen->move(public_path($path), $filename);
+            $post->foto = $filename;
+        }
+
+        $post->save();
+
+        return Redirect::route('blog.index');
     }
 
     /**
@@ -62,5 +147,50 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+        $post->delete();
+        return redirect()->route('blog.index');
+    }
+
+    public function getRecentPosts()
+    {
+        $posts = Post::with('user')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+
+        return response()->json($posts);
+    }
+
+    public function getPosts(Request $request)
+    {
+        $offset = $request->query('offset', 0);
+        $limit = 10;
+    
+        $posts = Post::orderBy('created_at', 'desc')
+            ->skip($offset)
+            ->take($limit)
+            ->get();
+    
+        $hasMore = Post::count() > $offset + $limit;
+    
+        return response()->json([
+            'posts' => $posts,
+            'hasMore' => $hasMore,
+        ]);
+    }
+
+    public function storeComment(Request $request, $postId)
+    {
+        $request->validate([
+            'contenido' => 'required|string|max:1000',
+        ]);
+
+        $comment = new Comment();
+        $comment->contenido = $request->contenido;
+        $comment->user_id = Auth::id();
+        $comment->post_id = $postId;
+        $comment->save();
+
+        return Redirect::back();
     }
 }

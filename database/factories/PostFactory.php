@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +19,10 @@ class PostFactory extends Factory
     {
         return [
             //
+            'user_id' => User::all()->random()->id,
+            'titulo' => $this->faker->sentence,
+            'foto' => $this->faker->imageUrl('1716326048-6eaf78151013ce00838b6aeb5c0e2f77.jpg'),
+            'contenido' => $this->faker->paragraph,
         ];
     }
 }

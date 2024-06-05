@@ -24,7 +24,9 @@ class User extends Authenticatable
         'password',
         'edad',
         'descripcion',
-        'direccion_id',
+        'pais_id',
+        'ciudad_id',
+        'foto',
     ];
 
     /**
@@ -51,20 +53,66 @@ class User extends Authenticatable
     }
 
 
-    //Relación 1:1 con la tabla dirección.
     public function direccion()
     {
         return $this->hasOne(Direccion::class);
     }
 
-    //Relación 1:N de Usuarios y Publicaciones (un usuario tiene muchas publicaciones).
     public function posts()
     {
         return $this->hasMany(Post::class);
     }
 
-    public function idiomas(): BelongsToMany
+    public function idiomas()
     {
-        return $this->belongsToMany(Idioma::class);
+        return $this->belongsToMany(Idioma::class, 'idioma_user');
+    }
+
+    public function books()
+    {
+        return $this->belongsToMany(Book::class, 'book_user')->withPivot('reading_status_id', 'ownership_status_id')->withTimestamps();
+    }
+
+    public function loansAsLender()
+    {
+        return $this->hasMany(Loan::class, 'lender_id');
+    }
+
+    public function loansAsBorrower()
+    {
+        return $this->hasMany(Loan::class, 'borrower_id');
+    }
+    public function pais()
+    {
+        return $this->belongsTo(Pais::class);
+    }
+
+    public function ciudad()
+    {
+        return $this->belongsTo(Ciudad::class);
+    }
+
+    public function wishListBooks()
+    {
+        return $this->belongsToMany(Book::class, 'book_user')
+                    ->withPivot('reading_status_id')
+                    ->wherePivot('reading_status_id', ReadingStatus::where('estado', 'leer')->first()->id);
+    }
+
+    public function booksToShare()
+    {
+        return $this->belongsToMany(Book::class, 'book_user')
+                    ->withPivot('ownership_status_id')
+                    ->wherePivot('ownership_status_id', OwnershipStatus::where('estado', 'compartir')->first()->id);
+    }
+
+    public function likedBooks()
+    {
+        return $this->belongsToMany(Book::class, 'likes')->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
