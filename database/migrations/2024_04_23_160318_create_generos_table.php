@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('generos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('book_id')->nullable();
             $table->enum('genero', ['Narrativo', 'Lírico', 'Poético', 'Dramático', 'Didáctico']);
             $table->timestamps();
         });

@@ -9,8 +9,10 @@ class Tematica extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['tematica'];
+
     public function books()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsToMany(Book::class, 'book_tematica');
     }
 }

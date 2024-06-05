@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('idiomas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('book_id')->nullable();
-            $table->enum('idioma', ['Español', 'Inglés', 'Francés', 'Alemán'])->default('Español');
+            $table->string('idioma');
             $table->timestamps();
         });
     }

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('categorias', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('book_id')->nullable();
             $table->enum('categoria', ['Aventura', 'Ciencia ficción', 'Romance', 'Misterio', 'Fantasía', 'Cómic/manga', 'Acción', 'Comedia', 'Suspense', 'Terror']);
             $table->timestamps();
         });

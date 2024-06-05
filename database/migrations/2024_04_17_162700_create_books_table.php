@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('titulo', 75);
             $table->string('autor', 100);
-            $table->unsignedBigInteger('idioma_id')->nullable();
-            $table->unsignedBigInteger('tematica_id')->nullable();
-            $table->unsignedBigInteger('categoria_id')->nullable();
-            $table->unsignedBigInteger('genero_id')->nullable();
+            $table->string('foto')->nullable();
+            $table->text('descripcion')->nullable();
             $table->timestamps();
         });
     }
