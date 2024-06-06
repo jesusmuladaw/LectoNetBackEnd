@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\FotoController;
 use App\Http\Controllers\LikeController;
-use App\Http\Controllers\MessageController;
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
@@ -58,8 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
 
 
-    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
-    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+
     Route::get('/api/posts/recent', [PostController::class, 'getRecentPosts'])->name('posts.recent');
     Route::get('/api/books/near-you', [BookController::class, 'booksNearYou'])->name('books.nearYou');
     Route::get('/api/books/recommended', [BookController::class, 'recommendedBooks'])->name('books.recommended');
@@ -75,6 +75,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/books/{book}/wish', [BookController::class, 'wish'])->name('books.wish');
     Route::post('/books/{book}/reading-status/{estado}', [BookController::class, 'changeReadingStatus'])->name('books.changeReadingStatus');
     Route::post('/books/{book}/ownership-status/{estado}', [BookController::class, 'changeOwnershipStatus'])->name('books.changeOwnershipStatus');
+    Route::get('/books/{id}/users-sharing', [BookController::class, 'getUsersSharingBook'])->name('books.users-sharing');
+
 
     Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
     Route::get('/blog/create', [PostController::class, 'create'])->name('blog.create');
@@ -90,13 +92,28 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/search', [SearchController::class, 'search'])->name('search');
 
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
     
-    
+    Route::get('/conversations', [MessageController::class, 'conversations'])->name('conversations.index');
+    Route::get('/messages/{userId}', [MessageController::class, 'showMessages'])->name('messages.show');
 
 
     Route::get('/users-with-shared-books', function () {
         return inertia('UsersWithSharedBooks');
     })->name('users.compartenLibros');
+
+    Route::get('/loan-requests', [LoanController::class, 'loanRequests'])->name('loan-requests');
+
+    Route::post('/books/{book}/request-loan', [LoanController::class, 'requestLoan'])->name('request-loan');
+    Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
+    Route::get('/loans/{id}', [LoanController::class, 'show'])->name('loans.show');
+    Route::post('/loans/{id}/confirm', [LoanController::class, 'confirmLoan'])->name('loans.confirm');
+    Route::post('/loan-requests/{loan}/approve', [LoanController::class, 'approveLoan'])->name('loan-approve');
+    Route::post('/loan-requests/{loan}/reject', [LoanController::class, 'rejectLoan'])->name('loan-reject');
+    Route::post('/loans/{id}/return', [LoanController::class, 'returnBook'])->name('loans.return');
+    Route::get('/loan-requests/approved', [LoanController::class, 'approvedRequests'])->name('loan-approved-requests');
+    Route::get('/loan-requests/rejected', [LoanController::class, 'rejectedRequests'])->name('loan-rejected-requests');
 
 
 });

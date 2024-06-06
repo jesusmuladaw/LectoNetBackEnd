@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import React, { useState } from 'react';
-import { Head } from '@inertiajs/react';
+import React, { useState, useEffect } from 'react';
+import { Head, Link } from '@inertiajs/react';
 import axios from 'axios';
 import Heart from 'react-animated-heart';
 import FotoLibro from "@/Components/FotoLibro";
@@ -9,6 +9,17 @@ export default function Show({ auth, mustVerifyEmail, status, book, reading_stat
     const [isLiked, setIsLiked] = useState(book.liked);
     const [readingStatus, setReadingStatus] = useState(reading_status);
     const [ownershipStatus, setOwnershipStatus] = useState(ownership_status);
+    const [usersSharing, setUsersSharing] = useState([]);
+
+    useEffect(() => {
+        axios.get(`/books/${book.id}/users-sharing`)
+            .then((response) => {
+                setUsersSharing(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching users sharing the book', error);
+            });
+    }, [book.id]);
 
     const handleLike = async () => {
         try {
@@ -38,6 +49,16 @@ export default function Show({ auth, mustVerifyEmail, status, book, reading_stat
             setOwnershipStatus(estado);
         } catch (error) {
             console.error(`Error changing ownership status to ${estado}`, error);
+        }
+    };
+
+    const handleRequestBook = async (lenderId) => {
+        try {
+            await axios.post(`/books/${book.id}/request-loan`, { lender_id: lenderId });
+            alert('La solicitud de préstamo ha sido enviada.');
+        } catch (error) {
+            console.error('Error requesting the book', error);
+            alert('Hubo un error al solicitar el libro.');
         }
     };
 
@@ -124,6 +145,22 @@ export default function Show({ auth, mustVerifyEmail, status, book, reading_stat
                                 <option value="prestado">Prestado</option>
                                 <option value="recibido">Recibido</option>
                             </select>
+                        </div>
+                        
+                        <div className="mt-4">
+                            <h2 className="font-bold text-lg">Usuarios que comparten este libro:</h2>
+                            <ul>
+                                {usersSharing.length > 0 ? (
+                                    usersSharing.map((user) => (
+                                        <li key={user.id} className="flex items-center justify-between mb-2">
+                                            <Link href={`/profile/${user.id}`} className="text-blue-500 hover:underline mr-2">{user.name}</Link>
+                                            <button onClick={() => handleRequestBook(user.id)} className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-700">Pedir libro</button>
+                                        </li>
+                                    ))
+                                ) : (
+                                    <li>No hay usuarios compartiendo este libro</li>
+                                )}
+                            </ul>
                         </div>
                     </div>
                 </div>

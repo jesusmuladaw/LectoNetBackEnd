@@ -45,7 +45,7 @@ class ProfileController extends Controller
     public function show($id)
     {
         $user = User::with('pais', 'ciudad', 'likedBooks', 'books', 'wishListBooks', 'booksToShare', 'posts')->findOrFail($id);
-        return inertia('Profile/Show', ['usuario' => $user]);
+        return Inertia::render('Profile/Show', ['usuario' => $user]);
     }
 
     public function edit(Request $request)
@@ -61,7 +61,8 @@ class ProfileController extends Controller
 
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $user = $request->user();
+        /** @var \App\Models\User */
+        $user = Auth::user();
         $user->fill($request->validated());
 
         if ($user->isDirty('email')) {

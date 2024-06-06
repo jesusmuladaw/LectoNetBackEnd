@@ -311,4 +311,31 @@ class BookController extends Controller
 
         return response()->json(['book' => $book, 'wishCount' => $mostWishedBook->wish_count]);
     }
+
+    public function getUsersSharingBook($id)
+    {
+        $sharedStatus = OwnershipStatus::where('estado', 'compartir')->first();
+
+        $book = Book::findOrFail($id);
+
+        $usersSharingBook = $book->users()->wherePivot('ownership_status_id', $sharedStatus->id)->get();
+
+        return response()->json($usersSharingBook);
+    }
+
+    public function requestLoan(Request $request, $id)
+    {
+        $request->validate([
+            'lender_id' => 'required|exists:users,id',
+        ]);
+
+        $book = Book::findOrFail($id);
+        $borrower = Auth::user();
+        $lender = User::findOrFail($request->lender_id);
+
+        // Aquí puedes agregar lógica para manejar la solicitud de préstamo, por ejemplo, enviar una notificación al prestamista
+
+        return response()->json(['message' => 'La solicitud de préstamo ha sido enviada.'], 200);
+    }
+
 }

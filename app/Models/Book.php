@@ -47,7 +47,7 @@ class Book extends Model
 
     public function owner()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsToMany(User::class, 'book_user')->withPivot('ownership_status_id')->withTimestamps();
     }
 
  

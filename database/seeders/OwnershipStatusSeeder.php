@@ -18,6 +18,7 @@ class OwnershipStatusSeeder extends Seeder
             ['estado' => 'compartir'],
             ['estado' => 'prestado'],
             ['estado' => 'recibido'],
+            ['estado' => 'solicitado'],
         ];
 
         DB::table('ownership_statuses')->insert($statuses);

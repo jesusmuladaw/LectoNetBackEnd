@@ -33,27 +33,9 @@ return new class extends Migration
             $table->dropForeign('ciudad_id');
         });
 
-        Schema::table('books', function (Blueprint $table) {
-            $table->dropForeign('idioma_id');
-            $table->dropForeign('tematica_id');
-            $table->dropForeign('categoria_id');
-            $table->dropForeign('genero_id');
-        });
-
         Schema::table('posts', function (Blueprint $table) {
             $table->dropForeign('user_id');
         });
 
-        Schema::table('tematicas', function (Blueprint $table) {
-            $table->dropForeign('book_id');
-        });
-
-        Schema::table('generos', function (Blueprint $table) {
-            $table->dropForeign('book_id');
-        });
-
-        Schema::table('categorias', function (Blueprint $table) {
-            $table->dropForeign('book_id');
-        });
     }
 };

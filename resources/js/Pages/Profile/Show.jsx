@@ -1,12 +1,19 @@
 import React from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Link, Head } from '@inertiajs/react';
+import { Link, Head, usePage } from '@inertiajs/react';
 import UserPostsGeneric from "./Partials/UserPostsGeneric";
 import { BooksToShareGeneric, WishListGeneric } from './Partials/BibliotecaYDeseosGenerico';
 import FotoPerfil from './Partials/FotoPerfil';
 import ReadingBooks from './Partials/LibrosLeyendoActualmente';
+import Messages from '@/Components/Messages/Message';
 
 export default function Show({ auth, usuario }) {
+    const [showMessages, setShowMessages] = React.useState(false);
+
+    const handleSendMessageClick = () => {
+        setShowMessages(true);
+    };
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title={`${usuario.name} ${usuario.apellidos}`} />
@@ -26,11 +33,11 @@ export default function Show({ auth, usuario }) {
                         <p>{usuario.ciudad?.nombre}</p>
 
                         {(auth.user && auth.user.id !== usuario.id) ? (
-                            <Link href={'http://127.0.0.1:8000/'}
+                            <button onClick={handleSendMessageClick}
                                 className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] underline"
                             >
                                 Enviar mensaje 
-                            </Link>
+                            </button>
                         ) : (
                             <Link href={route('profile.index')}
                                 className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] underline"
@@ -62,6 +69,14 @@ export default function Show({ auth, usuario }) {
                         <UserPostsGeneric userId={usuario.id} />
                     </div>
                 </div>
+                {showMessages && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                        <div className="bg-white rounded-lg shadow-lg p-4 w-full md:w-1/2">
+                            <Messages auth={auth} receiverId={usuario.id} receiverName={usuario.name} />
+                            <button onClick={() => setShowMessages(false)} className="mt-4 bg-red-500 text-white rounded px-4 py-2">Cerrar</button>
+                        </div>
+                    </div>
+                )}
             </div>
         </AuthenticatedLayout>
     );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logoSVG from '../../img/LogoLectoNet.png';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
@@ -6,10 +6,27 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import FotoPerfil from '@/Pages/Profile/Partials/FotoPerfil';
 import SearchBar from '@/Components/SearchBar';
-
+import axios from 'axios';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const [hasNewMessages, setHasNewMessages] = useState(false);
+
+    useEffect(() => {
+        const checkForNewMessages = async () => {
+            try {
+                const response = await axios.get('/messages/check-new');
+                setHasNewMessages(response.data.hasNewMessages);
+            } catch (error) {
+                console.error('Error checking for new messages', error);
+            }
+        };
+
+        checkForNewMessages();
+        const interval = setInterval(checkForNewMessages, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div className="min-h-screen bg-blue-50">
@@ -37,10 +54,8 @@ export default function Authenticated({ user, header, children }) {
                                     Blog
                                 </NavLink>
                             </div>
-                            
-
                         </div>
-                        <div className="flex items-center space-x-4 w-full max-w-56 md:max-w-md lg:max-w-lg">
+                        <div className="flex items-center space-x-4 w-full max-w-42 md:max-w-md lg:max-w-lg">
                             <SearchBar />
                         </div>
 
@@ -51,18 +66,23 @@ export default function Authenticated({ user, header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center p-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                className="inline-flex items-center p-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150 relative"
                                             >
+                                                {hasNewMessages && (
+                                                    <span className="absolute bottom-0 right-0 inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
+                                                )}
                                                 <div className='m-auto rounded-full overflow-hidden w-8 h-8'>
                                                     <FotoPerfil fotoId={user.foto}/>
                                                 </div>
-
                                             </button>
                                         </span>
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
                                         <Dropdown.Link href={`http://127.0.0.1:8000/profile/${user.id}`}>Perfil</Dropdown.Link>
+                                        <Dropdown.Link href={route('conversations.index')}>Mensajes</Dropdown.Link>
+                                        <Dropdown.Link href={route('loan-approved-requests')}>Solicitudes Aprobadas</Dropdown.Link>
+                                        <Dropdown.Link href={route('loan-rejected-requests')}>Solicitudes Rechazadas</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Cerrar sesión
                                         </Dropdown.Link>
@@ -105,7 +125,7 @@ export default function Authenticated({ user, header, children }) {
                     </div>
 
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('explorar')} active={route().current('explorar')}>
+                        <ResponsiveNavLink href={route('books.index')} active={route().current('books.index')}>
                             Libros
                         </ResponsiveNavLink>
                     </div>
@@ -128,6 +148,9 @@ export default function Authenticated({ user, header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.index')}>Perfil</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('conversations.index')}>Mensajes</ResponsiveNavLink>
+                            <Dropdown.Link href={route('loan-approved-requests')}>Solicitudes Aprobadas</Dropdown.Link>
+                            <Dropdown.Link href={route('loan-rejected-requests')}>Solicitudes Rechazadas</Dropdown.Link>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Cerrar sesión
                             </ResponsiveNavLink>

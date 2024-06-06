@@ -22,7 +22,7 @@ const FotoPost = ({ fotoId }) => {
 
     return (
         <div>
-            {<img src={fotoUrl} alt="Imagen" />}
+            {<img className=' max-h-52' src={fotoUrl} alt="Imagen" />}
         </div>
     );
 };

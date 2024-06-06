@@ -84,12 +84,12 @@ class User extends Authenticatable
     }
     public function pais()
     {
-        return $this->belongsTo(Pais::class);
+        return $this->belongsTo(Pais::class, 'pais_id');
     }
 
     public function ciudad()
     {
-        return $this->belongsTo(Ciudad::class);
+        return $this->belongsTo(Ciudad::class, 'ciudad_id');
     }
 
     public function wishListBooks()
