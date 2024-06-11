@@ -146,7 +146,7 @@ export default function Authenticated({ user, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.index')}>Perfil</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('profile.show', user.id)}>Perfil</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('conversations.index')}>Mensajes</ResponsiveNavLink>
                             <Dropdown.Link href={route('loan-requests')}>Préstamos</Dropdown.Link>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
