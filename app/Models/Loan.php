@@ -10,7 +10,7 @@ class Loan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'lender_id', 'borrower_id', 'book_id', 'due_date', 'returned_at',
+        'lender_id', 'borrower_id', 'book_id', 'due_date', 'returned_at', 'approved_at', 'rejected_at'
     ];
 
     public function lender()

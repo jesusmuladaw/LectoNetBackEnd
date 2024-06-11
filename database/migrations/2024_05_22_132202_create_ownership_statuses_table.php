@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ownership_statuses', function (Blueprint $table) {
             $table->id();
-            $table->enum('estado', ['compartir', 'prestado', 'recibido','solicitado']);
+            $table->enum('estado', ['none', 'compartir', 'prestado', 'recibido','solicitado']);
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('idioma_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('idioma_id')->constrained()->onDelete('cascade');
+            $table->foreignId('idioma_id')->constrained('idiomas')->onDelete('cascade');
             $table->timestamps();
         });
     }

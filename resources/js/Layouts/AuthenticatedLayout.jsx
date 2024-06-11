@@ -81,8 +81,7 @@ export default function Authenticated({ user, header, children }) {
                                     <Dropdown.Content>
                                         <Dropdown.Link href={`http://127.0.0.1:8000/profile/${user.id}`}>Perfil</Dropdown.Link>
                                         <Dropdown.Link href={route('conversations.index')}>Mensajes</Dropdown.Link>
-                                        <Dropdown.Link href={route('loan-approved-requests')}>Solicitudes Aprobadas</Dropdown.Link>
-                                        <Dropdown.Link href={route('loan-rejected-requests')}>Solicitudes Rechazadas</Dropdown.Link>
+                                        <Dropdown.Link href={route('loan-requests')}>Préstamos</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Cerrar sesión
                                         </Dropdown.Link>
@@ -149,8 +148,7 @@ export default function Authenticated({ user, header, children }) {
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.index')}>Perfil</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('conversations.index')}>Mensajes</ResponsiveNavLink>
-                            <Dropdown.Link href={route('loan-approved-requests')}>Solicitudes Aprobadas</Dropdown.Link>
-                            <Dropdown.Link href={route('loan-rejected-requests')}>Solicitudes Rechazadas</Dropdown.Link>
+                            <Dropdown.Link href={route('loan-requests')}>Préstamos</Dropdown.Link>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Cerrar sesión
                             </ResponsiveNavLink>
@@ -166,6 +164,9 @@ export default function Authenticated({ user, header, children }) {
             )}
 
             <main>{children}</main>
+            <footer className="py-16 text-center text-sm text-black">
+                LectoNet Created By Jesús Mula
+            </footer>
         </div>
     );
 }

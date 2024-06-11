@@ -4,17 +4,19 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import FotoPost from '@/Components/FotoPost';
 
 
-export default function Edit({ auth, post }) {
-    const { data, setData, put, processing, errors } = useForm({
-        titulo: post.titulo,
-        contenido: post.contenido,
+
+export default function Edit({ auth, post1 }) {
+    const { data, setData, post, processing, errors } = useForm({
+        _method: 'POST',
+        titulo: post1.titulo,
+        contenido: post1.contenido,
         foto: null,
         remove_image: false
     });
 
     const submit = (e) => {
         e.preventDefault();
-        put(route('blog.update', post.id), {
+        post(route('blog.update', post1.id), {
             forceFormData: true,
         });
     };
@@ -57,10 +59,10 @@ export default function Edit({ auth, post }) {
                         />
                         {errors.foto && <span className="text-red-600">{errors.foto}</span>}
                     </div>
-                    {post.foto && (
+                    {post1.foto && (
                         <div className="mb-4">
                             <div className="w-full md:w-8/12 h-auto mb-4">
-                                <FotoPost fotoId={post.foto}/>
+                                <FotoPost fotoId={post1.foto}/>
                             </div>
                             
                             <label className="inline-flex items-center">

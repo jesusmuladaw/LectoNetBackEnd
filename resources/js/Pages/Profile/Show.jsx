@@ -31,6 +31,12 @@ export default function Show({ auth, usuario }) {
                         )}
                         <p>{usuario.pais?.nombre}</p>
                         <p>{usuario.ciudad?.nombre}</p>
+                        <p>Idiomas:</p>
+                        <p className='flex gap-2'>
+                            {usuario.idiomas.map((idioma) => (
+                                <p key={idioma.id}>{idioma.idioma}</p>
+                            ))}
+                        </p>
 
                         {(auth.user && auth.user.id !== usuario.id) ? (
                             <button onClick={handleSendMessageClick}

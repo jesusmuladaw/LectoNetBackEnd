@@ -9,6 +9,7 @@ use App\Models\Categoria;
 use App\Models\Foto;
 use App\Models\Genero;
 use App\Models\Idioma;
+use App\Models\Loan;
 use App\Models\ReadingStatus;
 use App\Models\OwnershipStatus;
 use App\Models\Tematica;
@@ -18,6 +19,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class BookController extends Controller
@@ -325,17 +327,27 @@ class BookController extends Controller
 
     public function requestLoan(Request $request, $id)
     {
-        $request->validate([
-            'lender_id' => 'required|exists:users,id',
-        ]);
+        try {
+            $request->validate([
+                'lender_id' => 'required|exists:users,id',
+            ]);
 
-        $book = Book::findOrFail($id);
-        $borrower = Auth::user();
-        $lender = User::findOrFail($request->lender_id);
+            $book = Book::findOrFail($id);
+            $borrower = Auth::user();
+            $lender = User::findOrFail($request->lender_id);
 
-        // Aquí puedes agregar lógica para manejar la solicitud de préstamo, por ejemplo, enviar una notificación al prestamista
+            Loan::create([
+                'book_id' => $book->id,
+                'user_id' => $id,
+                'status' => 'solicitado',
+            ]);
 
-        return response()->json(['message' => 'La solicitud de préstamo ha sido enviada.'], 200);
+            return response()->json(['message' => 'La solicitud de préstamo ha sido enviada.'], 200);
+        
+        } catch (\Exception $e) {
+            Log::error('Error requesting book loan: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al solicitar el libro'], 500);
+        }
     }
 
 }

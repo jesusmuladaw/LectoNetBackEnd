@@ -15,6 +15,7 @@ class OwnershipStatusSeeder extends Seeder
     {
         //
         $statuses = [
+            ['estado' => 'none'],
             ['estado' => 'compartir'],
             ['estado' => 'prestado'],
             ['estado' => 'recibido'],

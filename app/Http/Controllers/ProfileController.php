@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\BookUser;
 use App\Models\Ciudad;
 use App\Models\Direccion;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Foto;
+use App\Models\Idioma;
+use App\Models\Loan;
 use App\Models\OwnershipStatus;
 use App\Models\Pais;
 use App\Models\ReadingStatus;
@@ -44,8 +47,24 @@ class ProfileController extends Controller
 
     public function show($id)
     {
-        $user = User::with('pais', 'ciudad', 'likedBooks', 'books', 'wishListBooks', 'booksToShare', 'posts')->findOrFail($id);
-        return Inertia::render('Profile/Show', ['usuario' => $user]);
+        $user = User::with('pais', 'ciudad', 'idiomas', 'likedBooks', 'books', 'wishListBooks', 'booksToShare', 'posts', 'librosPrestados', 'librosRecibidos')->findOrFail($id);
+        $prestadoStatusId  = OwnershipStatus::where('estado', 'prestado')->first()->id;
+        $recibidoStatusId  = OwnershipStatus::where('estado', 'recibido')->first()->id;
+
+        $librosPrestados = BookUser::where('user_id', $id)
+        ->where('ownership_status_id', $prestadoStatusId )
+        ->with('book')
+        ->get();
+
+        $librosRecibidos = BookUser::where('user_id', $id)
+        ->where('ownership_status_id', $recibidoStatusId )
+        ->with('book')
+        ->get();
+
+        return Inertia::render('Profile/Show', [
+            'usuario' => $user,
+
+        ]);
     }
 
     public function edit(Request $request)
@@ -56,6 +75,7 @@ class ProfileController extends Controller
             'user' => $request->user(),
             'paises' => Pais::all(),
             'ciudades' => Ciudad::all(),
+            'idiomas' => Idioma::all(),
         ]);
     }
 
@@ -83,6 +103,7 @@ class ProfileController extends Controller
 
         $user->pais_id = $request->input('pais_id');
         $user->ciudad_id = $request->input('ciudad_id');
+        $user->idiomas()->sync(collect($request->input('idiomas'))->pluck('value'));
 
         $user->save();
 

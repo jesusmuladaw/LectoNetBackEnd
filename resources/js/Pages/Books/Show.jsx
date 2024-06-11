@@ -52,13 +52,20 @@ export default function Show({ auth, mustVerifyEmail, status, book, reading_stat
         }
     };
 
+    const handleButtonClick = () => {
+        if (ownershipStatus === 'compartir') {
+            handleOwnershipStatusChange('none');
+        } else {
+            handleOwnershipStatusChange('compartir');
+        }
+    };
+
     const handleRequestBook = async (lenderId) => {
         try {
             await axios.post(`/books/${book.id}/request-loan`, { lender_id: lenderId });
             alert('La solicitud de préstamo ha sido enviada.');
         } catch (error) {
             console.error('Error requesting the book', error);
-            alert('Hubo un error al solicitar el libro.');
         }
     };
 
@@ -139,12 +146,14 @@ export default function Show({ auth, mustVerifyEmail, status, book, reading_stat
                                 <option value="leyendo">Leyendo</option>
                                 <option value="leer">Añadir a deseos</option>
                             </select>
-                            <select value={ownershipStatus} onChange={(e) => handleOwnershipStatusChange(e.target.value)} className="text-blue-500 hover:text-blue-900">
-                                <option value="">Seleccionar estado de propiedad</option>
-                                <option value="compartir">Compartir</option>
-                                <option value="prestado">Prestado</option>
-                                <option value="recibido">Recibido</option>
-                            </select>
+                            
+                            <button
+                                onClick={handleButtonClick}
+                                className={`text-white px-4 py-2 rounded ${ownershipStatus === 'compartir' ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700'}`}
+                            >
+                                {ownershipStatus === 'compartir' ? 'Quitar de mi biblioteca' : 'Añadir a mi biblioteca'}
+                            </button>
+                            
                         </div>
                         
                         <div className="mt-4">

@@ -93,7 +93,7 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
-        return Inertia::render('Blog/Edit', ['post' => $post]);
+        return Inertia::render('Blog/Edit', ['post1' => $post]);
     }
 
     /**
@@ -117,15 +117,13 @@ class PostController extends Controller
         $post->contenido = $request->contenido;
 
         if ($request->remove_image) {
-            if ($post->foto && file_exists(public_path('images/postImages/' . $post->imagen))) {
-                unlink(public_path('images/postImages/' . $post->imagen));
-            }
-            $post->foto = null;
-        } elseif ($request->hasFile('foto')) {
             if ($post->foto && file_exists(public_path('images/postImages/' . $post->foto))) {
                 unlink(public_path('images/postImages/' . $post->foto));
             }
-            $imagen = $request->file('imagen');
+            $post->foto = null;
+        } elseif ($request->hasFile('foto')) {
+            
+            $imagen = $request->file('foto');
             $path = 'images/postImages';
             $filename = time() . '-' . $imagen->getClientOriginalName();
 

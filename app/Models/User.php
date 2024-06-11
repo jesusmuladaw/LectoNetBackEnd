@@ -115,4 +115,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function librosPrestados()
+    {
+        return $this->hasMany(Loan::class, 'lender_id')->whereNull('returned_at');
+    }
+
+    public function librosRecibidos()
+    {
+        return $this->hasMany(Loan::class, 'borrower_id')->whereNull('returned_at');
+    }
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
+import Select from 'react-select';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import InputError from '@/Components/InputError';
@@ -7,11 +8,12 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { Transition } from '@headlessui/react';
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
-    const { auth, paises, ciudades } = usePage().props;
+    const { auth, paises, ciudades, idiomas } = usePage().props;
     const user = auth.user;
 
     const sortedPaises = [...paises].sort((a, b) => a.nombre.localeCompare(b.nombre));
     const sortedCiudades = [...ciudades].sort((a, b) => a.nombre.localeCompare(b.nombre));
+    const sortedIdiomas = [...idiomas].sort((a, b) => a.idioma.localeCompare(b.idioma));
 
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
         _method: 'POST',
@@ -22,6 +24,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         descripcion: user.descripcion,
         pais_id: user.pais_id || '',
         ciudad_id: user.ciudad_id || '',
+        idiomas: (user.idiomas || []).map(idioma => ({ value: idioma.id, label: idioma.idioma })),
         foto: null,
     });
 
@@ -35,6 +38,10 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
             pais_id: e.target.value,
             ciudad_id: '',
         });
+    };
+
+    const handleIdiomaChange = (selectedOptions) => {
+        setData('idiomas', selectedOptions);
     };
 
     const submit = (e) => {
@@ -173,6 +180,20 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         autoComplete="idioma_id"
                     />
                     <InputError className="mt-2" message={errors.idioma_id} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="idiomas" value="Idiomas" />
+                    <Select
+                        isMulti
+                        name="idiomas"
+                        options={sortedIdiomas.map(idioma => ({ value: idioma.id, label: idioma.idioma }))}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        value={data.idiomas}
+                        onChange={handleIdiomaChange}
+                    />
+                    <InputError className="mt-2" message={errors.idiomas} />
                 </div>
 
                 <div>

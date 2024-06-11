@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/{post}/comments', [PostController::class, 'storeComment'])->name('comments.store');
     Route::get('/blog/{post}', [PostController::class, 'show'])->name('blog.show');
     Route::get('/blog/{post}/edit', [PostController::class, 'edit'])->name('blog.edit');
-    Route::put('/blog/{post}', [PostController::class, 'update'])->name('blog.update');
+    Route::post('/blog/{post}', [PostController::class, 'update'])->name('blog.update');
     Route::delete('/blog/{post}', [PostController::class, 'destroy'])->name('blog.destroy');
 
     Route::get('/api/posts', [PostController::class, 'getPosts'])->name('api.posts');
@@ -109,8 +109,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
     Route::get('/loans/{id}', [LoanController::class, 'show'])->name('loans.show');
     Route::post('/loans/{id}/confirm', [LoanController::class, 'confirmLoan'])->name('loans.confirm');
-    Route::post('/loan-requests/{loan}/approve', [LoanController::class, 'approveLoan'])->name('loan-approve');
-    Route::post('/loan-requests/{loan}/reject', [LoanController::class, 'rejectLoan'])->name('loan-reject');
+    Route::post('/loans/{loan}/approve', [LoanController::class, 'approveLoan'])->name('loan-approve');
+    Route::post('/loans/{loan}/reject', [LoanController::class, 'rejectLoan'])->name('loan-reject');
+    Route::post('/loans/{loan}/return', [LoanController::class, 'returnLoan'])->name('loan-return');
     Route::post('/loans/{id}/return', [LoanController::class, 'returnBook'])->name('loans.return');
     Route::get('/loan-requests/approved', [LoanController::class, 'approvedRequests'])->name('loan-approved-requests');
     Route::get('/loan-requests/rejected', [LoanController::class, 'rejectedRequests'])->name('loan-rejected-requests');
