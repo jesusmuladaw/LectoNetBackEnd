@@ -7,7 +7,7 @@ const FotoPerfil = ({ fotoId }) => {
     useEffect(() => {
         const fetchFotoUrl = async () => {
             try {
-                setFotoUrl(`http://127.0.0.1:8000/images/profilePictures/${fotoId}`);
+                setFotoUrl(`http://3.93.228.85/images/profilePictures/${fotoId}`);
             } catch (error) {
                 console.error('Error al obtener la foto:', error);
             }
