@@ -188,7 +188,7 @@ class BookController extends Controller
         $books = Book::whereHas('users', function($query) use ($user) {
             $query->where('pais_id', $user->pais_id)
                   ->where('ciudad_id', $user->ciudad_id)
-                  ->where('book_user.ownership_status_id', 1);
+                  ->where('book_user.ownership_status_id', 2);
         })->get();
 
         $books = $books->map(function ($book) use ($user) {

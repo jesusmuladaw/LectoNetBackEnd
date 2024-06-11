@@ -171,18 +171,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="idioma_id" value="Idioma" />
-                    <TextInput
-                        id="idioma_id"
-                        className="mt-1 block w-full"
-                        value={data.idioma_id}
-                        onChange={(e) => setData('idioma_id', e.target.value)}
-                        autoComplete="idioma_id"
-                    />
-                    <InputError className="mt-2" message={errors.idioma_id} />
-                </div>
-
-                <div>
                     <InputLabel htmlFor="idiomas" value="Idiomas" />
                     <Select
                         isMulti
