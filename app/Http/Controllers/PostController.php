@@ -9,6 +9,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -61,13 +62,10 @@ class PostController extends Controller
     
             if ($request->hasFile('foto')) {
                 $imagen = $request->file('foto');
-                $path = 'images/postImages';
+                $path = ('images/postImages');
                 $filename = time() . '-' . $imagen->getClientOriginalName();
     
-                if (!file_exists(public_path($path))) {
-                    mkdir(public_path($path), 0755, true);
-                }
-                $imagen->move(public_path($path), $filename);
+                Storage::disk('public')->putFileAs($path, $imagen, $filename);
                 $post->foto = $filename;
             }
     

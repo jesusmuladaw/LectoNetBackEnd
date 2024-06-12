@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class BookController extends Controller
@@ -74,8 +75,8 @@ class BookController extends Controller
             if ($request->hasFile('foto')) {
                 $file = $request->file('foto');
                 $filename = time() . '-' . $file->getClientOriginalName();
-                $path = public_path('images/books');
-                $file->move($path, $filename);
+                $path = ('images/books');
+                Storage::disk('public')->putFileAs($path, $file, $filename);
                 $book->foto = $filename;
             }
 
