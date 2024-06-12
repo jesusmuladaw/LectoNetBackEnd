@@ -65,7 +65,7 @@ class PostController extends Controller
                 $path = ('images/postImages');
                 $filename = time() . '-' . $imagen->getClientOriginalName();
     
-                Storage::disk('public/storage')->putFileAs($path, $imagen, $filename);
+                Storage::disk('public')->putFileAs($path, $imagen, $filename);
                 $post->foto = $filename;
             }
     
