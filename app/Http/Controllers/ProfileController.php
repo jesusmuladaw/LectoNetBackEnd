@@ -94,7 +94,7 @@ class ProfileController extends Controller
             $path = ('images\profilePictures');
             $filename = time() . '-' . $f->getClientOriginalName();
 
-            Storage::disk('public')->putFileAs($path, $f, $filename);
+            $f->move(public_path($path), $filename);
             $user->foto = $filename;
         }
 
