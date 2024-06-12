@@ -6,10 +6,9 @@ const FotoPerfil = ({ fotoId }) => {
 
     useEffect(() => {
         const fetchFotoUrl = async () => {
-            try {
-                setFotoUrl(`http://3.93.228.85/storage/images/profilePictures/{fotoId}`);
-            } catch (error) {
-                console.error('Error al obtener la foto:', error);
+            if (fotoId) {
+                const url = `http://3.93.228.85/storage/images/profilePictures/${fotoId}`;
+                setFotoUrl(url);
             }
         };
 
@@ -22,7 +21,7 @@ const FotoPerfil = ({ fotoId }) => {
 
     return (
         <div>
-            {<img src={fotoUrl} alt="Imagen" />}
+            {fotoUrl ? <img src={fotoUrl} alt="Imagen de perfil" /> : <p>Cargando...</p>}
         </div>
     );
 };
