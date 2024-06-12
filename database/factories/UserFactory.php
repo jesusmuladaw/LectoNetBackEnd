@@ -40,7 +40,7 @@ class UserFactory extends Factory
             'descripcion' => Str::limit(fake()->text(), 150),
             'foto' => '_ea1a1366-6dd7-48e0-90cf-414229ef58e2.jfif',
             'pais_id' => 28,
-            'ciudad_id' => $ciudad ? $ciudad->id : null, 
+            'ciudad_id' => 641, 
             'created_at' => now(),
             'updated_at' => now(),
         ];

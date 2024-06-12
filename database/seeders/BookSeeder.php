@@ -18,31 +18,31 @@ class BookSeeder extends Seeder
         DB::table('books')->insert([
             'titulo' => 'libro1',
             'autor' => 'autor1',
-            'foto' => 'descarta (1).jfif',
+            'foto' => 'descarga (1).jfif',
             'descripcion' => 'descripción',
         ]);
         DB::table('books')->insert([
             'titulo' => 'libro2',
             'autor' => 'autor2',
-            'foto' => 'descarta (2).jfif',
+            'foto' => 'descarga (2).jfif',
             'descripcion' => 'descripción',
         ]);
         DB::table('books')->insert([
             'titulo' => 'libro3',
             'autor' => 'autor3',
-            'foto' => 'descarta (3).jfif',
+            'foto' => 'descarga (3).jfif',
             'descripcion' => 'descripción',
         ]);
         DB::table('books')->insert([
             'titulo' => 'libro4',
             'autor' => 'autor4',
-            'foto' => 'descarta.jfif',
+            'foto' => 'descarga.jfif',
             'descripcion' => 'descripción',
         ]);
         DB::table('books')->insert([
             'titulo' => 'libro5',
             'autor' => 'autor5',
-            'foto' => 'descarta.png',
+            'foto' => 'descarga.png',
             'descripcion' => 'descripción',
         ]);
         DB::table('books')->insert([
@@ -124,6 +124,6 @@ class BookSeeder extends Seeder
             'descripcion' => 'descripción',
         ]);
 
-        Book::factory(50)->create();
+        Book::factory(10)->create();
     }
 }
