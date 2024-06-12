@@ -125,10 +125,8 @@ class PostController extends Controller
             $path = 'images/postImages';
             $filename = time() . '-' . $imagen->getClientOriginalName();
 
-            if (!file_exists(public_path($path))) {
-                mkdir(public_path($path), 0755, true);
-            }
-            $imagen->move(public_path($path), $filename);
+            Storage::disk('public')->putFileAs($path, $imagen, $filename);
+
             $post->foto = $filename;
         }
 
