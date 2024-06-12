@@ -122,7 +122,7 @@ class PostController extends Controller
         } elseif ($request->hasFile('foto')) {
             
             $imagen = $request->file('foto');
-            $path = 'images/postImages';
+            $path = ('images/postImages');
             $filename = time() . '-' . $imagen->getClientOriginalName();
 
             Storage::disk('public')->putFileAs($path, $imagen, $filename);

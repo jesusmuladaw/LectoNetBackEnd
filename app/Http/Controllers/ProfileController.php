@@ -22,7 +22,6 @@ use App\Models\Pais;
 use App\Models\ReadingStatus;
 use App\Models\Status;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -90,32 +89,13 @@ class ProfileController extends Controller
             $user->email_verified_at = null;
         }
 
-        
+        if($request->hasFile('foto')){
+            $f = $request->file('foto');
+            $path = ('images\profilePictures');
+            $filename = time() . '-' . $f->getClientOriginalName();
 
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            Log::debug('Archivo recibido para subir: ', ['nombre' => $file->getClientOriginalName(), 'tamaño' => $file->getSize()]);
-            
-            $filename = time() . '-' . $file->getClientOriginalName();
-            $path = 'images/profilePictures';
-    
-            // Depuración: Verifica si el archivo es válido
-            if ($file->isValid()) {
-                Log::debug('Archivo es válido, intentando guardar.');
-                $stored = Storage::disk('public')->putFileAs($path, $file, $filename);
-                if ($stored) {
-                    Log::debug('Archivo guardado exitosamente.', ['ruta' => $path . '/' . $filename]);
-                    $user->foto = $filename;
-                } else {
-                    Log::error('Error al guardar el archivo.', ['ruta' => $path . '/' . $filename]);
-                    return back()->withErrors(['foto' => 'Error al guardar la imagen.']);
-                }
-            } else {
-                Log::error('El archivo no es válido.', ['nombre' => $file->getClientOriginalName()]);
-                return back()->withErrors(['foto' => 'El archivo no es válido.']);
-            }
-        } else {
-            Log::debug('No se recibió ningún archivo.');
+            Storage::disk('public')->putFileAs($path, $f, $filename);
+            $user->foto = $filename;
         }
 
         $user->pais_id = $request->input('pais_id');

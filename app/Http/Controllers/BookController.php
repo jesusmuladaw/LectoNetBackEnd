@@ -146,7 +146,7 @@ class BookController extends Controller
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $filename = time() . '-' . $file->getClientOriginalName();
-            $path = public_path('images/books');
+            $path = ('images/books');
             Storage::disk('public')->putFileAs($path, $file, $filename);
             $book->foto = $filename;
         }
