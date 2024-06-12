@@ -94,10 +94,8 @@ class ProfileController extends Controller
             $path = ('images\profilePictures');
             $filename = time() . '-' . $f->getClientOriginalName();
 
-            if (!file_exists($path)) {
-                mkdir($path, 0755, true);
-            }
-            $f->move(public_path($path), $filename);
+            Storage::disk('public')->putFileAs($path, $f, $filename);
+
             $user->foto = $filename;
         }
 
