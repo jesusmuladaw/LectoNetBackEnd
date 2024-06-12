@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        User::factory(600)->create();
+        User::factory(30)->create();
             
 
     }

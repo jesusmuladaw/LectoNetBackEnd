@@ -39,7 +39,7 @@ class UserFactory extends Factory
             'edad' => fake()->numberBetween(18, 90),
             'descripcion' => Str::limit(fake()->text(), 150),
             'foto' => '_ea1a1366-6dd7-48e0-90cf-414229ef58e2.jfif',
-            'pais_id' => $pais->id,
+            'pais_id' => 28,
             'ciudad_id' => $ciudad ? $ciudad->id : null, 
             'created_at' => now(),
             'updated_at' => now(),

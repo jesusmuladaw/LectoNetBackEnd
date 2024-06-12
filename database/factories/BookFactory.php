@@ -24,7 +24,7 @@ class BookFactory extends Factory
         return [
             'titulo' => $this->faker->sentence(3),
             'autor' => $this->faker->name,
-            'foto' => 'book_cover.png',
+            'foto' => '1718102336-El señor de los anillos.jpg',
             'descripcion' => implode(' ', $this->faker->paragraphs()),
         ];
     }
