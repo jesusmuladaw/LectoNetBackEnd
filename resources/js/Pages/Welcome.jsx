@@ -16,11 +16,11 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 <div className="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#af9392] selection:text-white">
                     <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                         <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                            <div className="flex lg:justify-center lg:col-start-2">
-                                <img className='h-32' src={logoSVG} alt="Logo" />
-                                
-
+                            <div className="flex flex-col lg:justify-center lg:col-start-2">
+                                <img className='h-32 w-32 m-auto' src={logoSVG} alt="Logo" />
+                                <h1 className=' text-center font-bold text-gray-600 text-5xl font-serif pt-3'>LectoNet</h1>
                             </div>
+                            
                             <nav className="-mx-3 flex flex-1 justify-end">
                                 {auth.user ? (
                                     <Link

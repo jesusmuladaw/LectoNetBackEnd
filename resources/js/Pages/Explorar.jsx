@@ -9,7 +9,9 @@ export default function Explorar({ auth }) {
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Explorar" />
-
+            <div className=' max-w-screen-lg m-auto'>
+                <h1 className=' mt-4 text-start font-bold text-gray-600 text-3xl font-serif'>LectoNet</h1>
+            </div>
             <div className='flex flex-col lg:flex-row w-full'>
                 <div className='container mx-auto px-4 flex flex-col items-center'>
                     <div className='bg-gray-200 w-full max-w-3xl rounded-lg p-6 my-4'>
