@@ -45,7 +45,6 @@ const UserPostsGeneric = ({ userId }) => {
                         <div className=' w-full flex flex-col justify-between'>
                             <h3 className='font-bold text-lg'>{post.titulo}</h3>
                             <p className='text-sm'>{post.contenido}</p>
-                            <p className="text-sm text-gray-600">Publicado por {post.user.name} el {new Date(post.created_at).toLocaleDateString()}</p>
                             <div className="flex justify-end px-4">
                                 <Link href={route('blog.show', post.id)} className="text-blue-500 hover:underline">Leer más</Link>
                             </div>
