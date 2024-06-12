@@ -91,10 +91,15 @@ class ProfileController extends Controller
 
         if($request->hasFile('foto')){
             $f = $request->file('foto');
-            $path = ('storage\images\profilePictures');
+            $path = ('images\profilePictures');
             $filename = time() . '-' . $f->getClientOriginalName();
 
-            Storage::disk('public')->putFileAs($path, $f, $filename);
+            if ($f->isValid()) {
+                Storage::disk('public')->putFileAs($path, $f, $filename);
+                $user->foto = $filename;
+            } else {
+                return back()->withErrors(['foto' => 'El archivo no es válido.']);
+            }
             $user->foto = $filename;
         }
 
