@@ -7,7 +7,7 @@ const FotoLibro = ({ fotoId }) => {
     useEffect(() => {
         const fetchFotoUrl = async () => {
             try {
-                setFotoUrl(`http://3.93.228.85/images/books/${fotoId}`);
+                setFotoUrl(`https://3.93.228.85/images/books/${fotoId}`);
             } catch (error) {
                 console.error('Error al obtener la foto:', error);
             }
