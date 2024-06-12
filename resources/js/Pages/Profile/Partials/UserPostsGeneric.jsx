@@ -32,25 +32,27 @@ const UserPostsGeneric = ({ userId }) => {
     }
 
     return (
-        <div className="container mx-auto px-4">
-            <ul>
-                {posts.slice().map((post) => (
-                    <div key={post.id} className='bg-gray-200 w-full md:w-11/12 rounded-lg p-6 my-4 mx-auto'>
-                        <article className='bg-white p-4 rounded-lg flex flex-col md:flex-row space-y-10'>
-                            <div className='w-full md:w-36  object-cover m-4'>
-                                <FotoPost fotoId={post.foto}/>
+        <div className="bg-gray-200 w-full max-w-3xl rounded-lg p-6 my-4">
+            <h2 className="bg-white font-bold p-4 rounded-lg mb-4">Posts Recientes</h2>
+            {posts.map((post) => (
+                <div key={post.id} className="bg-white w-full rounded-lg p-6 mb-4">
+                    <article className='flex flex-col md:flex-row'>
+                        {post.foto && (
+                            <div className="w-full md:w-1/3 mb-4 md:mb-0">
+                                <FotoPost fotoId={post.foto} />
                             </div>
-                            <div className='flex flex-col justify-between'>
-                                <h3 className='font-bold text-lg pb-4'>{post.titulo}</h3>
-                                <p className='text-sm pb-4'>{post.contenido}</p>
-                                <div className="flex justify-end px-4">
-                                    <Link href={route('blog.show', post.id)} className="text-blue-500 hover:underline">Leer más</Link>
-                                </div>
+                        )}
+                        <div className=' w-full flex flex-col justify-between'>
+                            <h3 className='font-bold text-lg'>{post.titulo}</h3>
+                            <p className='text-sm'>{post.contenido}</p>
+                            <p className="text-sm text-gray-600">Publicado por {post.user.name} el {new Date(post.created_at).toLocaleDateString()}</p>
+                            <div className="flex justify-end px-4">
+                                <Link href={route('blog.show', post.id)} className="text-blue-500 hover:underline">Leer más</Link>
                             </div>
-                        </article>
-                    </div>
-                ))}
-            </ul>
+                        </div>
+                    </article>
+                </div>
+            ))}
         </div>
     );
 };
