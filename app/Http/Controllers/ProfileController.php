@@ -91,10 +91,10 @@ class ProfileController extends Controller
 
         if($request->hasFile('foto')){
             $f = $request->file('foto');
-            $path = ('images\profilePictures');
+            $path = ('storage\images\profilePictures');
             $filename = time() . '-' . $f->getClientOriginalName();
 
-            $f->move(public_path($path), $filename);
+            Storage::disk('public')->putFileAs($path, $f, $filename);
             $user->foto = $filename;
         }
 
