@@ -43,7 +43,6 @@ export default function UsersWithSharedBooks({ auth }) {
                             <li key={user.id} className="bg-white p-4 rounded-lg shadow-md flex items-center justify-between">
                                 <div>
                                     <h2 className="text-lg font-semibold">{user.name} {user.apellidos}</h2>
-                                    <p className="text-sm text-gray-600">{user.ciudad_id}, {user.pais_id}</p>
                                 </div>
                                 <Link href={route('profile.show', user.id)} className="text-blue-500 hover:underline">Ver perfil</Link>
                             </li>
