@@ -47,12 +47,12 @@ class PostController extends Controller
             $request->validate([
                 'titulo' => 'required|string|max:255',
                 'contenido' => 'required|string',
-                'imagen' => 'nullable|image|max:5120',
+                'imagen' => 'nullable|image|max:51200',
             ], [
                 'titulo.required' => 'El título es obligatorio.',
                 'contenido.required' => 'El contenido es obligatorio.',
                 'imagen.image' => 'El archivo debe ser una imagen.',
-                'imagen.max' => 'La imagen no debe ser mayor a 5 MB.'
+                'imagen.max' => 'La imagen no debe ser mayor a 50 MB.'
             ]);
     
             $post = new Post();
@@ -102,13 +102,13 @@ class PostController extends Controller
         $request->validate([
             'titulo' => 'required|string|max:255',
             'contenido' => 'required|string',
-            'foto' => 'nullable|image|max:5120',
+            'foto' => 'nullable|image|max:51200',
             'remove_image' => 'boolean'
         ], [
             'titulo.required' => 'El título es obligatorio.',
             'contenido.required' => 'El contenido es obligatorio.',
             'foto.image' => 'El archivo debe ser una imagen.',
-            'foto.max' => 'La imagen no debe ser mayor a 5 MB.'
+            'foto.max' => 'La imagen no debe ser mayor a 50 MB.'
         ]);
 
         $post->titulo = $request->titulo;
