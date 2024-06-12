@@ -24,7 +24,7 @@ class BookFactory extends Factory
         return [
             'titulo' => $this->faker->sentence(3),
             'autor' => $this->faker->name,
-            'foto' => $this->faker->imageUrl(200, 300, 'books', true, 'Faker'),
+            'foto' => 'book_cover.png',
             'descripcion' => implode(' ', $this->faker->paragraphs()),
         ];
     }
