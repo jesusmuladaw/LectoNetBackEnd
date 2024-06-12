@@ -7,7 +7,7 @@ const FotoPost = ({ fotoId }) => {
     useEffect(() => {
         const fetchFotoUrl = async () => {
             try {
-                setFotoUrl(`https://3.93.228.85/images/postImages/${fotoId}`);
+                setFotoUrl(`https://lectonet.mooo.com/images/postImages/${fotoId}`);
             } catch (error) {
                 console.error('Error al obtener la foto:', error);
             }

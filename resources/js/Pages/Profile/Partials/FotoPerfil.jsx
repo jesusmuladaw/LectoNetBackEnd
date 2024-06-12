@@ -7,7 +7,7 @@ const FotoPerfil = ({ fotoId }) => {
     useEffect(() => {
         const fetchFotoUrl = async () => {
             if (fotoId) {
-                const url = `https://3.93.228.85/images/profilePictures/${fotoId}`;
+                const url = `https://lectonet.mooo.com/images/profilePictures/${fotoId}`;
                 setFotoUrl(url);
             }
         };
