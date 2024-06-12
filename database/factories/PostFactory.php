@@ -21,7 +21,7 @@ class PostFactory extends Factory
             //
             'user_id' => User::all()->random()->id,
             'titulo' => $this->faker->sentence,
-            'foto' => $this->faker->imageUrl('1717095447-luca-bravo-VowIFDxogG4-unsplash.jpg'),
+            'foto' => ('1717095447-luca-bravo-VowIFDxogG4-unsplash.jpg'),
             'contenido' => $this->faker->paragraph,
         ];
     }
